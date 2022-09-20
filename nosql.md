@@ -1,0 +1,35 @@
+# Modelling, implementation and query of the Wells Road station to a MONGODB database
+
+
+#### INTRODUCTION
+This report evaluates the modelling implementation and query of the Wells road station from the Bristol air quality analysis data to a nosql database. For this task, the data is modelled to a Document-based database. Document based databases store and organize data as a collection of documents rather than structured tables with standard fields for each record. With this database, users can add any number of fields of any length to the document. The Wells Road station data is extracted and cleaned using python, and further modelled to Mongo DB using the Graphical user interface(GUI) of MongoDB compass. MongoDB is an open source nosql database management program which is a JSON-oriented (JavaScript Object Notation) document database and supports data storage in documents of various data types, ranging from strings,numbers boolean and an array of data types.
+
+#### MODELLING and STRUCTURE
+Although all types of databases adopt the same method of conceptual data modelling (which means UML class diagram can be used in the  NoSQL design at a conceptual level and can be used to design a Mongodb database), Nosql DataBase designs do not depend on the principles of relational database for their modelling, structure, implementation and data storage. In document based nosql databases, relationships are either embedded or referenced.The Wells station data is made up of 2 documents- the Site Document and readings document and these documents form part of the data structure. For the embedded relationship, MongoDB documents make it possible to embed document structures in a field within another document. For our data, the readings document(which contains all information of the records and time) is embedded into the broad document which in this case is called the Site document(which contains the site identifiation details and id). This is possible because the readings document is a sub entity of the Site document.Usually, embedded data models are denormalized.On a wide scale, the quality of an embedded structure is determined by the nesting depth and schema complexity.  Nesting depth criteria is based on the fact that there is an increase in the difficulty and cost of accessing information as the depth of the embedded information increases. This is as a result of increase in the complexity of accessing the information hidden in the lower levels of the document structure.
+For Referenced Documents, References store the relationships between data by including links (otherwise known as references) from one document to another. Since our data is normalized and there is a significant relationship between the two documents, the dominant model adopted for our data is the referenced model.In  referenced relationships, an arrow runs from the Site document and is directed to the readings document to indicate their relationship (note  that  the  current  document  can  reference  many  documents). The bidirectional  arrow (↕) is  used  to  represent  the  many  to  many  reference  relationships. Applications can resolve these references to access the related data. Broadly, these type of data models or structures are normalized models.
+(Note: a diagram representing the embedded and referenced structures of the Wells station data is attached to this report).
+
+In the process of designing data models, it is important to put into consideration the application usage of the data (queries, updates, access and processing of the data) as well as the fundamental structure of the data itself. Unlike relational database systems, where you must determine and declare the schema of a table prior to when the data is inserted, the collections in Mongodb are flexible by default, they do not require their documents to have the same schema. This means that the documents in a single collection is not required to have the same set of fields and the data type for a field can differ across documents within a collection. This flexibility eases the assignment of documents to an entity (or an object). Each document can match the data fields of the represented entity, even if the document varies widely from other documents in the collection.Also, model quality can be measured by several criteria termed 'Structural Metrics' which include nesting depth,schema complexity among others. These structural metrics guide the decision on the data structure to adopt for data models.
+
+
+
+
+### IMPLEMENTATION AND QUERY
+
+I hope to break down this section into a step by step description of all the processes involved in the implementation and query of this data in Mongodb. The first step is to prepare the data(Wells Road station records) by filtering all the records from the main data(the Bristol air quality data) and saving it to a .csv file. MongoDB compass was used to create, implement and store the data in the database. To avoid ambiguity, only the first 100 rows of the data is parsed into the database. For the next step,the database environment is set up. Compass was installed and set up and a connection was made to localhost27017 which opens up a panel similar to what we see when creating a connection with mysql workbench (Diagrams attached). This panel allows for all the database operations and data storage. A new database is created, after which a collection is created inside the database. There are options of adding data to the collection either by importing the data in csv or JSON format or by inserting the raw data documents. The Wells Road data is simply imported into the new database collection in csv format. Before the import, it is important to specify the data structure of the different data columns as failure to do so would result in the entire data being imported as string data type. The filter field in compass allows for data query. Unique Query operators are used in MongoDB to carry out a range of query operations such as comparisons, logical operations, evaluations, geospatial operations and the rest of them. Simple data queries were run on the database to filter rows with NO2 values greater than 20 using the "$gt" operator.
+```sh
+{'NO2':{$gt:20}
+```
+
+The database was also queried to filter rows with "NO" value equal to 4 using the $eq operator. 
+```sh
+{'NO':{$eq:4}
+```
+.(Note also; images of the queries are attached aswell).This query returned just 1 row since there was only one row with that value
+
+
+### CONCLUSION
+NoSQL databases were created in response to the limitations of traditional relational database technology. Compared to relational databases, they are more flexible, scalable and provide superior performance.NoSQL databases are popular for allowing data storage in ways that are closer to the way the data is used by applications. Very few transformations are required for data storage and retrieval.Document databases use JSON as a way to turn data into something much more like code. This allows the structure of the data to be under the control of the developer thus making them very developer friendly.
+
+
+
